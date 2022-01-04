@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
   getContacts,
   getContactById,
   addContact,
   removeContact,
   updateContact,
-} from "../../../controllers/contacts";
+} from '../../../controllers/contacts'
 
 import {
   validateCreate,
@@ -13,25 +13,26 @@ import {
   validateId,
   validateUpdateFavorite,
   validateQuery,
-} from "./validation";
+} from './validation'
 
-const router = new Router();
+import guard from '../../../middlewares/guard'
 
-router.get("/", validateQuery, getContacts);
+const router = new Router()
 
-router.get("/:id", validateId, getContactById);
+router.get('/', [guard, validateQuery], getContacts)
 
-router.post("/", validateCreate, addContact);
+router.get('/:id', [guard, validateId], getContactById)
 
-router.delete("/:id", validateId, removeContact);
+router.post('/', [guard, validateCreate], addContact)
 
-router.put("/:id", validateId, validateUpdate, updateContact);
+router.delete('/:id', [guard, validateId], removeContact)
+
+router.put('/:id', [guard, validateId, validateUpdate], updateContact)
 
 router.patch(
-  "/:id/favorite",
-  validateId,
-  validateUpdateFavorite,
-  updateContact
-);
+  '/:id/favorite',
+  [guard, validateId, validateUpdateFavorite],
+  updateContact,
+)
 
-export default router;
+export default router
