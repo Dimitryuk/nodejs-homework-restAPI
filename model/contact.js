@@ -27,12 +27,9 @@ const contactSchema = new Schema(
     },
     owner: {
       type: SchemaTypes.ObjectId,
-      ref: "user",
+      ref: 'user',
       required: true,
-      
-      
-      
-    }
+    },
   },
   {
     versionKey: false,
