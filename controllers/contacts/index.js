@@ -2,7 +2,7 @@ import repositoryContacts from '../../repository/contacts'
 import { HttpCode } from '../../lib/constants'
 
 const getContacts = async (req, res, next) => {
-  const {id: userId} = req.user
+  const { id: userId } = req.user
   const contacts = await repositoryContacts.listContacts(userId, req.query)
   res
     .status(HttpCode.OK)
@@ -11,8 +11,9 @@ const getContacts = async (req, res, next) => {
 
 const getContactById = async (req, res, next) => {
   const { id } = req.params
+  const { id: userId } = req.user
   const contact = await repositoryContacts.getContactById(userId, id)
-  console.log(contact) 
+  console.log(contact) // toObject
   if (contact) {
     return res
       .status(HttpCode.OK)
@@ -24,7 +25,7 @@ const getContactById = async (req, res, next) => {
 }
 
 const addContact = async (req, res, next) => {
-  const {id: userId} = req.user
+  const { id: userId } = req.user
   const newContact = await repositoryContacts.addContact(userId, req.body)
   res.status(HttpCode.CREATED).json({
     status: 'success',
@@ -35,7 +36,7 @@ const addContact = async (req, res, next) => {
 
 const removeContact = async (req, res, next) => {
   const { id } = req.params
-  const {id: userId} = req.user
+  const { id: userId } = req.user
   const contact = await repositoryContacts.removeContact(userId, id)
   if (contact) {
     return res
@@ -49,8 +50,8 @@ const removeContact = async (req, res, next) => {
 
 const updateContact = async (req, res, next) => {
   const { id } = req.params
-  const {id: userId} = req.user
-  const contact = await repositoryContacts.updateContact(id, req.body, userId)
+  const { id: userId } = req.user
+  const contact = await repositoryContacts.updateContact(userId, id, req.body)
   if (contact) {
     return res
       .status(HttpCode.OK)
